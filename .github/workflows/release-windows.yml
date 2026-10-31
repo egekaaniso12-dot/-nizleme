@@ -16,9 +16,7 @@ jobs:
       - run: npm install
       - name: Set update version
         run: npm version 1.1.${{ github.run_number }} --no-git-tag-version
-      - name: Build and publish installer plus update metadata
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Build Windows installer
         run: npm run dist:win
       - name: Attach installer and update manifest
         shell: pwsh
@@ -43,5 +41,9 @@ jobs:
           sha512: $hash
           releaseDate: '$releaseDate'
           "@
-          $manifest | Set-Content -Path dist/latest.yml -Encoding utf8
+          $manifest | Set-Content -Path dist/latest.yml -Encoding utf8NoBOM
+          gh release view $tag 2>$null | Out-Null
+          if ($LASTEXITCODE -ne 0) {
+            gh release create $tag --verify-tag --title "EgeHS AI Vitrin $version" --notes "Windows x64 kurulum dosyası. Kaynak kod MIT lisansıyla yayımlanmıştır."
+          }
           gh release upload $tag $installer.FullName $blockmap.FullName (Join-Path (Get-Location) 'dist/latest.yml') --clobber
