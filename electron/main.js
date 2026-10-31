@@ -10,7 +10,10 @@ autoUpdater.autoDownload = false;
 autoUpdater.autoInstallOnAppQuit = true;
 autoUpdater.on('update-available', info => mainWindow?.webContents.send('update:available', { version: info.version }));
 autoUpdater.on('download-progress', progress => mainWindow?.webContents.send('update:progress', { percent: progress.percent }));
-autoUpdater.on('update-downloaded', info => mainWindow?.webContents.send('update:downloaded', { version: info.version }));
+autoUpdater.on('update-downloaded', info => {
+  mainWindow?.webContents.send('update:downloaded', { version: info.version });
+  setTimeout(() => autoUpdater.quitAndInstall(true, true), 1000);
+});
 autoUpdater.on('error', error => mainWindow?.webContents.send('update:error', error?.message || 'Güncelleme kontrolü başarısız.'));
 
 async function readSettings() {
@@ -100,7 +103,7 @@ ipcMain.handle('settings:get', async () => publicSettings(await readSettings()))
 ipcMain.handle('settings:save', async (_event, providers) => writeSettings(providers));
 ipcMain.handle('ai:generate', async (_event, payload) => callModel(payload));
 ipcMain.handle('update:download', async () => autoUpdater.downloadUpdate());
-ipcMain.handle('update:install', () => autoUpdater.quitAndInstall(false, true));
+ipcMain.handle('update:install', () => autoUpdater.quitAndInstall(true, true));
 ipcMain.handle('file:save-html', async (_event, html) => {
   const result = await dialog.showSaveDialog({ title: 'Dijital vitrini kaydet', defaultPath: 'egehs-dijital-vitrin.html', filters: [{ name: 'Web sayfası', extensions: ['html'] }] });
   if (result.canceled || !result.filePath) return { canceled: true };
