@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "electron .",
-    "dist:win": "electron-builder --win nsis --x64",
+    "dist:win": "electron-builder --win nsis --x64 --publish never",
     "dist:dir": "electron-builder --dir"
   },
   "devDependencies": {
@@ -18,8 +18,8 @@
     "appId": "com.egehs.aivitrin",
     "productName": "EgeHS AI Vitrin",
     "directories": { "output": "dist" },
-    "files": ["electron/**/*", "index.html", "styles.css", "renderer.js", "package.json"],
-    "win": { "target": [{ "target": "nsis", "arch": ["x64"] }], "artifactName": "EgeHS-AI-Vitrin-Setup-${version}.${ext}" },
+    "files": ["electron/**/*", "assets/**/*", "index.html", "styles.css", "renderer.js", "package.json"],
+    "win": { "icon": "assets/icon.ico", "target": [{ "target": "nsis", "arch": ["x64"] }], "artifactName": "EgeHS-AI-Vitrin-Setup-${version}.${ext}" },
     "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true, "createDesktopShortcut": true, "createStartMenuShortcut": true }
   }
 }

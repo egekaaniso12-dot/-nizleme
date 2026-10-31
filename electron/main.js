@@ -70,7 +70,7 @@ async function callModel({ providerId, prompt, system }) {
     url = `${base}/chat/completions`;
     headers = { 'Content-Type': 'application/json', Authorization: `Bearer ${cfg.apiKey}` };
     if (providerId === 'openrouter') { headers['HTTP-Referer'] = 'https://egehsmedya.com'; headers['X-Title'] = 'EgeHS AI Vitrin'; }
-    body = { model, temperature: 0.7, response_format: { type: 'json_object' }, messages: [{ role: 'system', content: system }, { role: 'user', content: prompt }] };
+    body = { model, temperature: 0.7, messages: [{ role: 'system', content: system }, { role: 'user', content: prompt }] };
   }
   const response = await fetch(url, { method: 'POST', headers, body: JSON.stringify(body), signal: AbortSignal.timeout(90000) });
   const data = await response.json().catch(() => ({}));
@@ -81,7 +81,7 @@ async function callModel({ providerId, prompt, system }) {
 }
 
 function createWindow() {
-  const win = new BrowserWindow({ width: 1450, height: 940, minWidth: 1100, minHeight: 720, backgroundColor: '#080d18', title: 'EgeHS AI Vitrin', webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, nodeIntegration: false, sandbox: true } });
+  const win = new BrowserWindow({ width: 1450, height: 940, minWidth: 1100, minHeight: 720, backgroundColor: '#080d18', title: 'EgeHS AI Vitrin', icon: path.join(__dirname, '..', 'assets', 'icon.ico'), webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, nodeIntegration: false, sandbox: true } });
   win.loadFile(path.join(__dirname, '..', 'index.html'));
 }
 
