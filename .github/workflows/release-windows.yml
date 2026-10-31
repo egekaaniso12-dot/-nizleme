@@ -33,7 +33,7 @@ jobs:
           $hash = [Convert]::ToBase64String([Security.Cryptography.SHA512]::HashData([IO.File]::ReadAllBytes($installer.FullName)))
           $size = (Get-Item $installer.FullName).Length
           $releaseDate = [DateTime]::UtcNow.ToString('o')
-          @"
+          $manifest = @"
           version: $version
           files:
             - url: $($installer.Name)
@@ -42,5 +42,6 @@ jobs:
           path: $($installer.Name)
           sha512: $hash
           releaseDate: '$releaseDate'
-          "@ | Set-Content -Path dist/latest.yml -Encoding utf8
+          "@
+          $manifest | Set-Content -Path dist/latest.yml -Encoding utf8
           gh release upload $tag $installer.FullName $blockmap.FullName (Join-Path (Get-Location) 'dist/latest.yml') --clobber
