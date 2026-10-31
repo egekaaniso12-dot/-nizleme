@@ -1,13 +1,13 @@
 {
   "name": "egehs-ai-vitrin",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "EgeHS AI Vitrin — işletmeler için yapay zekâ destekli dijital vitrin oluşturucu",
   "main": "electron/main.js",
   "author": "EgeHS Medya",
   "license": "MIT",
   "scripts": {
     "start": "electron .",
-    "dist:win": "electron-builder --win nsis --x64 --publish never",
+    "dist:win": "electron-builder --win nsis --x64 --publish always",
     "dist:dir": "electron-builder --dir"
   },
   "devDependencies": {
@@ -17,9 +17,38 @@
   "build": {
     "appId": "com.egehs.aivitrin",
     "productName": "EgeHS AI Vitrin",
-    "directories": { "output": "dist" },
-    "files": ["electron/**/*", "assets/**/*", "index.html", "styles.css", "renderer.js", "package.json"],
-    "win": { "icon": "assets/icon.png", "target": [{ "target": "nsis", "arch": ["x64"] }], "artifactName": "EgeHS-AI-Vitrin-Setup-${version}.${ext}" },
-    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true, "createDesktopShortcut": true, "createStartMenuShortcut": true }
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "assets/**/*",
+      "index.html",
+      "styles.css",
+      "renderer.js",
+      "package.json"
+    ],
+    "win": {
+      "icon": "assets/icon.png",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "EgeHS-AI-Vitrin-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "publish": [{ "provider": "github", "owner": "egekaaniso12-dot", "repo": "-nizleme", "releaseType": "release" }]
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.11"
   }
 }

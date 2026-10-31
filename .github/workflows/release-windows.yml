@@ -14,13 +14,9 @@ jobs:
         with:
           node-version: 22
       - run: npm install
-      - run: npm run dist:win
-      - name: Publish installer to GitHub Releases
+      - name: Set update version
+        run: npm version 1.1.${{ github.run_number }} --no-git-tag-version
+      - name: Build and publish installer plus update metadata
         env:
           GH_TOKEN: ${{ github.token }}
-        shell: pwsh
-        run: |
-          $tag = "v1.0.${{ github.run_number }}"
-          $installer = Get-ChildItem dist -Filter '*.exe' | Select-Object -ExpandProperty FullName
-          if (-not $installer) { throw 'Kurulum dosyası bulunamadı.' }
-          gh release create $tag $installer --title "EgeHS AI Vitrin $tag" --notes "Windows x64 kurulum dosyası. Kaynak kodu açık kaynak MIT lisansıyla yayımlanmıştır."
+        run: npm run dist:win

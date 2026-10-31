@@ -1,8 +1,17 @@
 const { app, BrowserWindow, ipcMain, safeStorage, dialog } = require('electron');
+const { autoUpdater } = require('electron-updater');
 const path = require('node:path');
 const fs = require('node:fs/promises');
 
 const SETTINGS_FILE = () => path.join(app.getPath('userData'), 'settings.json');
+let mainWindow = null;
+
+autoUpdater.autoDownload = false;
+autoUpdater.autoInstallOnAppQuit = true;
+autoUpdater.on('update-available', info => mainWindow?.webContents.send('update:available', { version: info.version }));
+autoUpdater.on('download-progress', progress => mainWindow?.webContents.send('update:progress', { percent: progress.percent }));
+autoUpdater.on('update-downloaded', info => mainWindow?.webContents.send('update:downloaded', { version: info.version }));
+autoUpdater.on('error', error => mainWindow?.webContents.send('update:error', error?.message || 'Güncelleme kontrolü başarısız.'));
 
 async function readSettings() {
   try {
@@ -81,13 +90,17 @@ async function callModel({ providerId, prompt, system }) {
 }
 
 function createWindow() {
-  const win = new BrowserWindow({ width: 1450, height: 940, minWidth: 1100, minHeight: 720, backgroundColor: '#080d18', title: 'EgeHS AI Vitrin', icon: path.join(__dirname, '..', 'assets', 'icon.png'), webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, nodeIntegration: false, sandbox: true } });
-  win.loadFile(path.join(__dirname, '..', 'index.html'));
+  mainWindow = new BrowserWindow({ width: 1450, height: 940, minWidth: 1100, minHeight: 720, backgroundColor: '#080d18', title: 'EgeHS AI Vitrin', icon: path.join(__dirname, '..', 'assets', 'icon.png'), webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, nodeIntegration: false, sandbox: true } });
+  mainWindow.on('closed', () => { mainWindow = null; });
+  mainWindow.loadFile(path.join(__dirname, '..', 'index.html'));
+  if (app.isPackaged) mainWindow.webContents.once('did-finish-load', () => setTimeout(() => autoUpdater.checkForUpdates().catch(() => {}), 1800));
 }
 
 ipcMain.handle('settings:get', async () => publicSettings(await readSettings()));
 ipcMain.handle('settings:save', async (_event, providers) => writeSettings(providers));
 ipcMain.handle('ai:generate', async (_event, payload) => callModel(payload));
+ipcMain.handle('update:download', async () => autoUpdater.downloadUpdate());
+ipcMain.handle('update:install', () => autoUpdater.quitAndInstall(false, true));
 ipcMain.handle('file:save-html', async (_event, html) => {
   const result = await dialog.showSaveDialog({ title: 'Dijital vitrini kaydet', defaultPath: 'egehs-dijital-vitrin.html', filters: [{ name: 'Web sayfası', extensions: ['html'] }] });
   if (result.canceled || !result.filePath) return { canceled: true };

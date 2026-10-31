@@ -7,7 +7,10 @@ EgeHS Medya için işletme bilgilerini yapay zekâ ile tanıtım metinlerine ve 
 - OpenAI, Google Gemini, OpenRouter, DeepSeek, Groq ve özel OpenAI uyumlu sağlayıcılar
 - API anahtarı ve model ayarlarını uygulama içinden yönetme
 - İşletme bilgilerine göre Türkçe web vitrini, sosyal medya metni, Google İşletme Profili açıklaması ve marka mesajı üretme
-- Canlı önizleme, yerel proje arşivi ve bağımsız HTML olarak dışa aktarma
+- Altı farklı site teması; logo, kapak fotoğrafı ve ürün fotoğrafı ekleme
+- Adres, çalışma saatleri, Instagram, WhatsApp ve telefon bağlantıları içeren kapsamlı vitrin
+- Görselleri HTML dosyasına gömerek dışa aktarma, canlı önizleme ve yerel proje arşivi
+- GitHub Releases üzerinden sürüm kontrolü ve uygulama içinden güncelleme indirme/kurma
 - Windows x64 kurulum dosyası ve kaynak kodu açık MIT lisansı
 
 ## Windows uygulaması
@@ -29,7 +32,7 @@ Windows kurulum dosyasını Windows üzerinde oluşturmak için:
 npm run dist:win
 ```
 
-`main` dalına gönderilen her güncelleme GitHub Actions ile Windows x64 NSIS kurulum paketi üretir ve yeni bir GitHub Release olarak yayımlar. Ayrıca kaynak kod, GitHub Pages önizlemesi için yapılandırılmıştır.
+`main` dalına gönderilen her güncelleme GitHub Actions ile Windows x64 NSIS kurulum paketi ve otomatik güncelleme dosyaları üretip yeni bir GitHub Release olarak yayımlar. Uygulama yeni sürüm bulduğunda güncelleme bildirimi gösterir; indirme ve kurma uygulama içinden yapılır. Ayrıca kaynak kod, GitHub Pages önizlemesi için yapılandırılmıştır.
 
 ## API ayarları ve gizlilik
 
