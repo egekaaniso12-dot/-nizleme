@@ -16,6 +16,12 @@ jobs:
       - run: npm install
       - name: Set update version
         run: npm version 1.1.${{ github.run_number }} --no-git-tag-version
+      - name: Create release tag
+        shell: pwsh
+        run: |
+          $tag = "v1.1.${{ github.run_number }}"
+          git tag $tag
+          git push origin $tag
       - name: Build Windows installer
         run: npm run dist:win
       - name: Attach installer and update manifest
