@@ -1,0 +1,25 @@
+{
+  "name": "egehs-ai-vitrin",
+  "version": "1.0.0",
+  "description": "EgeHS AI Vitrin — işletmeler için yapay zekâ destekli dijital vitrin oluşturucu",
+  "main": "electron/main.js",
+  "author": "EgeHS Medya",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dist:win": "electron-builder --win nsis --x64",
+    "dist:dir": "electron-builder --dir"
+  },
+  "devDependencies": {
+    "electron": "^37.2.6",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.egehs.aivitrin",
+    "productName": "EgeHS AI Vitrin",
+    "directories": { "output": "dist" },
+    "files": ["electron/**/*", "index.html", "styles.css", "renderer.js", "package.json"],
+    "win": { "target": [{ "target": "nsis", "arch": ["x64"] }], "artifactName": "EgeHS-AI-Vitrin-Setup-${version}.${ext}" },
+    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true, "createDesktopShortcut": true, "createStartMenuShortcut": true }
+  }
+}

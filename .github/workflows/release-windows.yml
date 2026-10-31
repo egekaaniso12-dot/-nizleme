@@ -1,0 +1,27 @@
+name: Build Windows installer
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run dist:win
+      - name: Publish installer to GitHub Releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+        run: |
+          $tag = "v1.0.${{ github.run_number }}"
+          $installer = Get-ChildItem dist -Filter '*.exe' | Select-Object -ExpandProperty FullName
+          if (-not $installer) { throw 'Kurulum dosyası bulunamadı.' }
+          gh release create $tag $installer --title "EgeHS AI Vitrin $tag" --notes "Windows x64 kurulum dosyası. Kaynak kodu açık kaynak MIT lisansıyla yayımlanmıştır."
