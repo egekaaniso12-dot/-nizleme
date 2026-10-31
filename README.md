@@ -19,7 +19,7 @@ Son Windows kurulum dosyasını [Releases](../../releases/latest) sayfasından i
 Node.js 22 veya üzeri gerekir.
 
 ```bash
-npm ci
+npm install
 npm start
 ```
 
