@@ -81,7 +81,7 @@ async function callModel({ providerId, prompt, system }) {
 }
 
 function createWindow() {
-  const win = new BrowserWindow({ width: 1450, height: 940, minWidth: 1100, minHeight: 720, backgroundColor: '#080d18', title: 'EgeHS AI Vitrin', icon: path.join(__dirname, '..', 'assets', 'icon.ico'), webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, nodeIntegration: false, sandbox: true } });
+  const win = new BrowserWindow({ width: 1450, height: 940, minWidth: 1100, minHeight: 720, backgroundColor: '#080d18', title: 'EgeHS AI Vitrin', icon: path.join(__dirname, '..', 'assets', 'icon.png'), webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, nodeIntegration: false, sandbox: true } });
   win.loadFile(path.join(__dirname, '..', 'index.html'));
 }
 

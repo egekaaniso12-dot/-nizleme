@@ -19,7 +19,7 @@
     "productName": "EgeHS AI Vitrin",
     "directories": { "output": "dist" },
     "files": ["electron/**/*", "assets/**/*", "index.html", "styles.css", "renderer.js", "package.json"],
-    "win": { "icon": "assets/icon.ico", "target": [{ "target": "nsis", "arch": ["x64"] }], "artifactName": "EgeHS-AI-Vitrin-Setup-${version}.${ext}" },
+    "win": { "icon": "assets/icon.png", "target": [{ "target": "nsis", "arch": ["x64"] }], "artifactName": "EgeHS-AI-Vitrin-Setup-${version}.${ext}" },
     "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true, "createDesktopShortcut": true, "createStartMenuShortcut": true }
   }
 }
